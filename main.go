@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 	conferenceName := "Crush Conference" // Syntactic sugar
@@ -19,25 +22,33 @@ func main() {
 	var userTickets uint
 
 	var bookings []string
-	
-	fmt.Println("Enter your First Name: ")
-	fmt.Scan(&firstName)
-	
-	fmt.Println("Enter your Last Name: ")
-	fmt.Scan(&lastName)
-	
-	fmt.Println("Enter your Email: ")
-	fmt.Scan(&email)
-	
-	fmt.Println("How many tickets do you want to book: ")
-	fmt.Scan(&userTickets)
-	
-	bookings = append(bookings, firstName + " " + lastName)
-	
-	remainingTickets = remainingTickets - userTickets
-	
-	fmt.Printf("Thank you, %v %v. We received your order to book %v tickets. You will a confirmation email at %v.\n", firstName, lastName, email, userTickets)
-	fmt.Printf("There are %v tickets left at %v conference\n", remainingTickets, conferenceName)
 
-	fmt.Printf("These are all the bookings %v", bookings)
+	for {
+		fmt.Println("Enter your First Name: ")
+		fmt.Scan(&firstName)
+		
+		fmt.Println("Enter your Last Name: ")
+		fmt.Scan(&lastName)
+		
+		fmt.Println("Enter your Email: ")
+		fmt.Scan(&email)
+		
+		fmt.Println("How many tickets do you want to book: ")
+		fmt.Scan(&userTickets)
+		
+		bookings = append(bookings, firstName + " " + lastName)
+		
+		remainingTickets = remainingTickets - userTickets
+		
+		fmt.Printf("Thank you, %v %v. We received your order to book %v tickets. You will a confirmation email at %v.\n", firstName, lastName,userTickets, email)
+		fmt.Printf("There are %v tickets left at %v conference\n", remainingTickets, conferenceName)
+
+		firstNames := []string{}
+		for _, booking := range bookings {
+			firstNames = append(firstNames, strings.Fields(booking)[0])
+		}
+
+		fmt.Printf("The first name of all our bookings: %v\n", firstNames)
+	}
+	
 }
