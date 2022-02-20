@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"strconv"
 )
 
 const conferenceTickets int = 50
 var conferenceName = "Crush Conference" // Syntactic sugar
 var remainingTickets uint = 50
-var bookings []string
+var bookings = make([]map[string]string, 0)
 
 func main() {
 
@@ -66,13 +66,20 @@ func getUserInformation() (string, string, string, uint) {
 func getFirstNames() []string {
 	firstNames := []string{}
 	for _, booking := range bookings {
-		firstNames = append(firstNames, strings.Fields(booking)[0])
+		firstNames = append(firstNames, booking["firstName"])
 	}
 	return firstNames
 }
 
 func bookTickets(firstName string, lastName string, email string, userTickets uint)  {
-	bookings = append(bookings, firstName + " " + lastName)
+
+	var userData = make(map[string]string)
+	userData["firstName"] = firstName
+	userData["lastName"] = lastName
+	userData["email"] = email
+	userData["numberOfTickets"] = strconv.FormatUint(uint64(userTickets),10)
+ 
+	bookings = append(bookings, userData)
 		
 	remainingTickets = remainingTickets - userTickets
 	
