@@ -63,26 +63,6 @@ func getUserInformation() (string, string, string, uint) {
 	return firstName, lastName, email, userTickets
 }
 
-func isValidateUserInfo(firstName string, lastName string, email string, userTickets uint) bool {
-	isValidName := len(firstName) > 2 && len(lastName) > 2 
-	isValidEmail := strings.Contains(email, "@")
-	isValidNumberOfTickets := userTickets > 0 && userTickets <= remainingTickets
-
-	if !isValidName{
-		fmt.Printf("Invalid firstname or lastname, please try again.\n")
-	}
-	
-	if !isValidEmail{
-		fmt.Printf("Invalid email, please try again.\n")
-	}
-
-	if !isValidNumberOfTickets{
-		fmt.Printf("Invalid email, please try again.\n")
-	}
-
-	return isValidName && isValidEmail && isValidNumberOfTickets
-}
-
 func getFirstNames() []string {
 	firstNames := []string{}
 	for _, booking := range bookings {
