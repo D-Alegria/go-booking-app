@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 const conferenceTickets int = 50
 var conferenceName = "Crush Conference" // Syntactic sugar
@@ -24,6 +27,7 @@ func main() {
 
 		if isValidateUserInfo(firstName,lastName,email, userTickets) {
 			bookTickets(firstName, lastName, email, userTickets)
+			go sendTickets(firstName, lastName, email, userTickets)
 	
 			firstNames := getFirstNames()
 			fmt.Printf("The first name of all our bookings: %v\n", firstNames)
@@ -90,4 +94,12 @@ func bookTickets(firstName string, lastName string, email string, userTickets ui
 	
 	fmt.Printf("Thank you, %v %v. We received your order to book %v tickets. You will a confirmation email at %v.\n", firstName, lastName,userTickets, email)
 	fmt.Printf("There are %v tickets left at %v conference\n", remainingTickets, conferenceName)
+}
+
+func sendTickets(firstName string, lastName string, email string, userTickets uint){
+	time.Sleep(10 * time.Second)
+	var ticket = fmt.Sprintf("%v tickets have been reserved", userTickets)
+	fmt.Println("##############################")
+	fmt.Printf("Sending ticket: %v.\nFor %v %v to %v\n", ticket, firstName, lastName, email)
+	fmt.Println("##############################")
 }
