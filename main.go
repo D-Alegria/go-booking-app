@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"time"
+	"sync"
 )
 
 const conferenceTickets int = 50
+var wg = sync.WaitGroup{}
 var conferenceName = "Crush Conference" // Syntactic sugar
 var remainingTickets uint = 50
 var bookings = make([]UserData, 0)
@@ -20,26 +22,25 @@ type UserData struct {
 func main() {
 
 	greetUsers()
-
-	for {
 		
-		firstName, lastName, email, userTickets := getUserInformation()
+	firstName, lastName, email, userTickets := getUserInformation()
 
-		if isValidateUserInfo(firstName,lastName,email, userTickets) {
-			bookTickets(firstName, lastName, email, userTickets)
-			go sendTickets(firstName, lastName, email, userTickets)
-	
-			firstNames := getFirstNames()
-			fmt.Printf("The first name of all our bookings: %v\n", firstNames)
-	
-			if remainingTickets == 0 {
-				fmt.Printf("Our conference is booked out. Please come back next year.\n")
-				break
-			}
+	if isValidateUserInfo(firstName,lastName,email, userTickets) {
+		bookTickets(firstName, lastName, email, userTickets)
+
+		wg.Add(1)
+		go sendTickets(firstName, lastName, email, userTickets)
+
+		firstNames := getFirstNames()
+		fmt.Printf("The first name of all our bookings: %v\n", firstNames)
+
+		if remainingTickets == 0 {
+			fmt.Printf("Our conference is booked out. Please come back next year.\n")
+			// break
 		}
-		
 	}
 	
+	wg.Wait()
 }
 
 func greetUsers()  {
@@ -80,7 +81,6 @@ func getFirstNames() []string {
 }
 
 func bookTickets(firstName string, lastName string, email string, userTickets uint)  {
-
 	var userData = UserData{
 		firstName: firstName,
 		lastNam: lastName,
@@ -102,4 +102,5 @@ func sendTickets(firstName string, lastName string, email string, userTickets ui
 	fmt.Println("##############################")
 	fmt.Printf("Sending ticket: %v.\nFor %v %v to %v\n", ticket, firstName, lastName, email)
 	fmt.Println("##############################")
+	wg.Done()
 }
