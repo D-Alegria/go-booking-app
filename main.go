@@ -96,7 +96,7 @@ func bookTickets(firstName string, lastName string, email string, userTickets ui
 	fmt.Printf("There are %v tickets left at %v conference\n", remainingTickets, conferenceName)
 }
 
-func sendTickets(firstName string, lastName string, email string, userTickets uint){
+func sendTickets(firstName string, lastName string, email string, userTickets uint) {
 	time.Sleep(10 * time.Second)
 	var ticket = fmt.Sprintf("%v tickets have been reserved", userTickets)
 	fmt.Println("##############################")
